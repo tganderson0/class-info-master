@@ -102,9 +102,10 @@ class ClassAssignment:
 
 class ClassMegaList:
     def __init__(self, classFile, assignmentFile):
+        self.classFile = classFile
+        self.assignmentFile = assignmentFile
         self.classList = self.addSavedClasses(classFile)
         self.assnList = self.addSavedAssignments(assignmentFile)
-        self.printAllAssignments()
 
     def addSavedClasses(self, classInfo: str):
         allClasses = []
@@ -129,7 +130,7 @@ class ClassMegaList:
         self.assnList.append(ClassAssignment())
 
     def printAllAssignments(self):
-        if self.assnList.count() == 0:
+        if len(self.assnList) == 0:
             print("No assignments right now!")
         else:
             print("Assignments coming up:")
@@ -140,10 +141,19 @@ class ClassMegaList:
                 else: numberThing = "th"
                 print(f"{assn.assignmentName} : Due on the {assn.dueDate}{numberThing}")
 
+    def printAllClasses(self):
+        if len(self.assnList) == 0:
+            print("No classes yet!")
+        else:
+            print("Classes:")
+            for cls in self.classList:
+                print(f"{cls.className}")
+
     def removeAssignment(self):
         while True:
             os.system('cls')
-            print(f"Please type the assignment you would like to remove: (or type stop)\n\t{self.printAllAssignments()}")
+            print(f"Please type the assignment you would like to remove: (or type stop)")
+            self.printAllAssignments()
             chosenAssignment = input()
             if chosenAssignment == "stop":
                 break
@@ -151,3 +161,63 @@ class ClassMegaList:
                 for assn in self.assnList:
                     if chosenAssignment == assn.assignmentName:
                         self.assnList.remove(assn)
+
+    def saveQuit(self):
+        print("Saving...\n")
+        with open(self.classFile, "w") as f:
+            f.seek(0)
+            f.truncate(0)
+            for cls in self.classList:
+                print(cls.formatForSaving(), file=f)
+        with open(self.assignmentFile, "w") as f:
+            f.seek(0)
+            f.truncate(0)
+            for assn in self.assnList:
+                print(assn.formatForSaving(), file=f)
+
+        input("Saved\nPress enter to close program")
+        exit()
+
+    def mainLoop(self):
+        running = True
+        validChoices = ["add class", "add assignment", "all classes", "all assignments", "class info", "assignment info", "remove assignment", "quit"]
+        while running:
+            self.printAllAssignments()
+            choice = input(f"\n\nPlease choose an option:\n\t{validChoices[0]}\n\t{validChoices[1]}\n\t{validChoices[2]}\n\t{validChoices[3]}\n\t{validChoices[4]}\n\t{validChoices[5]}\n\t{validChoices[6]}\n\t{validChoices[7]}\n")
+            if choice in validChoices:
+                if choice == validChoices[0]:
+                    self.addNewClass()
+                elif choice == validChoices[1]:
+                    self.addNewAssignment()
+                elif choice == validChoices[2]:
+                    self.printAllClasses()
+                elif choice == validChoices[3]:
+                    self.printAllAssignments()
+                elif choice == validChoices[4]:
+                    chosenClass = input(f"Please type the class name you want more info about:\n\t{self.printAllClasses()}")
+                    validClass = False
+                    for cls in self.classList:
+                        if chosenClass == cls.className:
+                            cls.printClassInfo()
+                            validClass = True
+                    if not validClass: print("That class does not exist")
+                elif choice == validChoices[5]:
+                    chosenAssn = input(f"Please type the assignment name you want more info about:\n\t{self.printAllAssignments()}")
+                    validAssn = False
+                    for assn in self.assnList:
+                        if chosenAssn == assn.assignmentName:
+                            assn.printAssignmentInfo()
+                            validAssn = True
+                    if not validAssn: print("That assignment does not exist")
+                elif choice == validChoices[6]:
+                    self.removeAssignment()
+                elif choice == validChoices[7]:
+                    self.saveQuit()
+            else:
+                os.system('cls')
+                print("Invalid Choice\n")
+
+
+if __name__=="__main__":
+    classMaster = ClassMegaList("classes.txt", "assignments.txt")
+    classMaster.mainLoop()
