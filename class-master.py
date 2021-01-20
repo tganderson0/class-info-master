@@ -117,6 +117,8 @@ class ClassMegaList:
         return allClasses
 
     def addNewClass(self):
+        os.system('cls')
+        print()
         self.classList.append(ClassInfo())
 
     def addSavedAssignments(self, assignInfo: str):
@@ -128,6 +130,8 @@ class ClassMegaList:
         return allAssn
 
     def addNewAssignment(self):
+        os.system('cls')
+        print()
         self.assnList.append(ClassAssignment())
 
     def printAllAssignments(self):
