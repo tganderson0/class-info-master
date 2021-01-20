@@ -22,6 +22,7 @@ class ClassInfo:
             self.whatToCallProf = input("Please enter the preferred name of the professor (or . if unknown): \n\t")
             self.classMainURL = input("Please enter the URL for the class: \n\t")
         else:
+            infoLine = infoLine.strip()
             splitInfo = infoLine.split("|")
             self.className = splitInfo[0]
             self.instructor = splitInfo[1]
@@ -112,7 +113,7 @@ class ClassMegaList:
         allClasses = []
         with open(classInfo) as clsMegaList:
             for classData in clsMegaList.readlines():
-                if classData[0] == "#": continue
+                if classData[0] == "#" or len(classData) < 3: continue
                 else: allClasses.append(ClassInfo(classData))
         return allClasses
 
@@ -154,6 +155,8 @@ class ClassMegaList:
             for cls in self.classList:
                 print(f"{cls.className}")
 
+        input("Press enter to continue")
+
     def removeAssignment(self):
         while True:
             os.system('cls')
@@ -187,10 +190,9 @@ class ClassMegaList:
         running = True
         validChoices = ["add class", "add assignment", "all classes", "all assignments", "class info", "assignment info", "remove assignment", "quit"]
         while running:
-            os.system('cls')
             print("\n")
             self.printAllAssignments()
-            choice = input(f"\n\nPlease choose an option:\n\t{validChoices[0]}\n\t{validChoices[1]}\n\t{validChoices[2]}\n\t{validChoices[3]}\n\t{validChoices[4]}\n\t{validChoices[5]}\n\t{validChoices[6]}\n\t{validChoices[7]}\n")
+            choice = input(f"\n\nPlease choose an option:\n\t{validChoices[0]}\n\t{validChoices[1]}\n\t{validChoices[2]}\n\t{validChoices[3]}\n\t{validChoices[4]}\n\t{validChoices[5]}\n\t{validChoices[6]}\n\t{validChoices[7]}\n").lower()
             if choice in validChoices:
                 if choice == validChoices[0]:
                     self.addNewClass()
