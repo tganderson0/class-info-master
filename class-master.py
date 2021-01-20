@@ -91,11 +91,12 @@ class ClassAssignment:
 
     def printAssignmentInfo(self):
         os.system('cls')
+        print("\n")
         if self.dueDate == 1 or self.dueDate == 21 or self.dueDate == 31: numberThing = "st"
         elif self.dueDate == 2 or self.dueDate == 22: numberThing = "nd"
         elif self.dueDate == 3 or self.dueDate == 23: numberThing = "rd"
         else: numberThing = "th"
-        print(f"{self.assignmentName}\n\t{self.shortDescription}\n{self.assignmentURL}\n{self.className}\nDue on the {self.dueDate}{numberThing}")
+        print(f"Name: {self.assignmentName}\n   {self.shortDescription}\n\nUrl: {self.assignmentURL}\n\nClass: {self.className}\n\nDue on the {self.dueDate}{numberThing}")
         input("\nPress enter to continue")
         os.system('cls')
 
@@ -131,9 +132,9 @@ class ClassMegaList:
 
     def printAllAssignments(self):
         if len(self.assnList) == 0:
-            print("No assignments right now!")
+            print("No assignments right now!\n")
         else:
-            print("Assignments coming up:")
+            print("Assignments coming up:\n")
             for assn in self.assnList:
                 if assn.dueDate == 1 or assn.dueDate == 21 or assn.dueDate == 31: numberThing = "st"
                 elif assn.dueDate == 2 or assn.dueDate == 22: numberThing = "nd"
@@ -182,6 +183,8 @@ class ClassMegaList:
         running = True
         validChoices = ["add class", "add assignment", "all classes", "all assignments", "class info", "assignment info", "remove assignment", "quit"]
         while running:
+            os.system('cls')
+            print("\n")
             self.printAllAssignments()
             choice = input(f"\n\nPlease choose an option:\n\t{validChoices[0]}\n\t{validChoices[1]}\n\t{validChoices[2]}\n\t{validChoices[3]}\n\t{validChoices[4]}\n\t{validChoices[5]}\n\t{validChoices[6]}\n\t{validChoices[7]}\n")
             if choice in validChoices:
@@ -194,7 +197,10 @@ class ClassMegaList:
                 elif choice == validChoices[3]:
                     self.printAllAssignments()
                 elif choice == validChoices[4]:
-                    chosenClass = input(f"Please type the class name you want more info about:\n\t{self.printAllClasses()}")
+                    os.system('cls')
+                    self.printAllClasses()
+                    chosenClass = input(f"\nPlease type the class name you want more info about:")
+
                     validClass = False
                     for cls in self.classList:
                         if chosenClass == cls.className:
@@ -202,7 +208,11 @@ class ClassMegaList:
                             validClass = True
                     if not validClass: print("That class does not exist")
                 elif choice == validChoices[5]:
-                    chosenAssn = input(f"Please type the assignment name you want more info about:\n\t{self.printAllAssignments()}")
+                    os.system('cls')
+                    print()
+                    self.printAllAssignments()
+                    chosenAssn = input(f"\nPlease type the assignment name you want more info about:\n")
+
                     validAssn = False
                     for assn in self.assnList:
                         if chosenAssn == assn.assignmentName:
@@ -219,5 +229,6 @@ class ClassMegaList:
 
 
 if __name__=="__main__":
+    os.system('cls')
     classMaster = ClassMegaList("classes.txt", "assignments.txt")
     classMaster.mainLoop()
